@@ -1,6 +1,7 @@
 grpc_center
 ===========
 
-# mcc(management control center)
+gRPC服务治理系统，提供服务注册、服务发现、负载均衡等功能。
 
-# monitor
+开发中...
+
