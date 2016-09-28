@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+// java support
+option java_multiple_files = true;
+option java_package = "grpc_center.mcc";
+option java_outer_classname = "ManagementControlCenter";
+
+// 管控中心
+service Mcc {
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc Lookup(LookupRequest) returns (LookupResponse) {}
+    rpc Join(JoinRequest) returns (JoinResponse) {}
+    rpc HeartBeat(HeartBeatRequest) returns (HeartBeatResponse) {}
+}
+
+
+// 注册服务 - 请求
+message RegisterRequest {
+    // 服务唯一名称
+    string name = 1;
+    // 服务描述
+    string desc = 2;
+}
+
+// 注册服务 - 返回
+message RegisterResponse {
+    // 结果标记
+    int32 code = 1;
+    // 返回信息
+    string msg = 2;
+    // 服务的apptoken，用于增加服务器
+    string appToken = 3;
+}
+
+// 加入服务的集群 - 请求
+message JoinRequest {
+    // 服务的token
+    string appToken = 1;
+    // 自己的地址
+    string addr = 2;
+    // 自己的权重
+    int32 weight = 3;
+}
+
+// 加入服务的集群 - 返回
+message JoinResponse {
+    int32 code = 1;
+    string desc = 2;
+}
+
+// 心跳 - 请求
+message HeartBeatRequest {
+    int32 status = 1;
+}
+
+// 心跳 - 返回
+message HeartBeatResponse {
+    int32 code = 1;
+}
+
+// 查找服务 - 请求
+message LookupRequest {
+    // 服务名称
+    string serviceName = 1;
+}
+
+// 查找服务 - 返回
+message LookupResponse {
+    int32 code = 1;
+    // 服务地址
+    string serviceAddr = 2;
+}
+
