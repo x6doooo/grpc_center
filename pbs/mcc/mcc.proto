@@ -24,12 +24,8 @@ message RegisterRequest {
 
 // 注册服务 - 返回
 message RegisterResponse {
-    // 结果标记
-    int32 code = 1;
-    // 返回信息
-    string msg = 2;
     // 服务的apptoken，用于增加服务器
-    string appToken = 3;
+    string appToken = 1;
 }
 
 // 加入服务的集群 - 请求
@@ -44,8 +40,7 @@ message JoinRequest {
 
 // 加入服务的集群 - 返回
 message JoinResponse {
-    int32 code = 1;
-    string desc = 2;
+    bool success = 1;
 }
 
 // 心跳 - 请求
@@ -66,8 +61,7 @@ message LookupRequest {
 
 // 查找服务 - 返回
 message LookupResponse {
-    int32 code = 1;
     // 服务地址
-    string serviceAddr = 2;
+    string serviceAddr = 1;
 }
 
