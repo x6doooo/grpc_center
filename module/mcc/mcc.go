@@ -22,6 +22,21 @@ const (
     service_lock_prefix = "service_grpc_lock/"
 )
 
+
+/*
+    etcd data structure
+
+    keys:
+    service_grpc/${appName}/token
+    service_grpc/${appName}/name
+    service_grpc/${appName}/desc
+    service_grpc/${appName}/server/${addr}/weight
+    service_grpc/${appName}/server/${addr}/status
+
+
+
+ */
+
 type ServiceServer struct {
     Addr   string
     Weight int
@@ -136,6 +151,30 @@ func(me *mcc) joinHandler(appToken, addr string, weight int32) (success bool, er
             return
         }
         // todo: update
+        if serviceInfo.Token != appToken {
+            err = errors.New("appToken not matched")
+            return
+        }
+        hasIt := false
+        for _, item := range serviceInfo.Servers {
+            if item.Addr == addr {
+                hasIt = true
+                item.Weight = weight
+            }
+        }
+        if !hasIt {
+            serviceInfo.Servers = append(serviceInfo.Servers, ServiceServer{
+                Addr: addr,
+                Weight: weight,
+            })
+        }
+        var updateValueByte []byte
+        updateValueByte, err = json.Marshal(serviceInfo)
+        if err != nil {
+            return
+        }
+        updateValue = string(updateValueByte)
+        return
     }
 
     me.etcdClient.TxnUpdate(appNameHasPrefix, updateHandler())
