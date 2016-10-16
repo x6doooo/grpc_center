@@ -28,10 +28,9 @@ const (
 
     keys:
     service_grpc/${appName}/token
-    service_grpc/${appName}/name
     service_grpc/${appName}/desc
     service_grpc/${appName}/server/${addr}/weight
-    service_grpc/${appName}/server/${addr}/status
+    service_grpc/${appName}/server/${addr}/lastHeartBeat
 
 
 
@@ -112,19 +111,19 @@ func (me *mcc) register2etcd(name, desc string) (token string, err error) {
     tokenSrc := auth.TokenService.Encrypt(tokenBase)
     token = string(tokenSrc)
 
-    info := &ServiceInfo{
-        Name: name,
-        Desc: desc,
-        Token: token,
-    }
-
-    infoByte, err := json.Marshal(info)
-    if err != nil {
-        return
-    }
-
-    infoStr := string(infoByte)
-    _, err = me.etcdClient.TxnPut(name, infoStr)
+    //info := &ServiceInfo{
+    //    Name: name,
+    //    Desc: desc,
+    //    Token: token,
+    //}
+    //
+    //infoByte, err := json.Marshal(info)
+    //if err != nil {
+    //    return
+    //}
+    //
+    //infoStr := string(infoByte)
+    //_, err = me.etcdClient.TxnPut(name, infoStr)
 
     if err != nil {
         return

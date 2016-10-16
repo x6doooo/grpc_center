@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "grpc_center.service_center";
+option java_outer_classname = "ServiceCenter";
+
+
+service ServiceCenter {
+    // for service
+    rpc Join(JoinRequest) returns (JoinResponse) {}
+//    rpc Leave(LeaveRequest) returns (LeaveResponse) {}
+    // for client
+//    rpc Lookup(LookupRequest) returns (LookupResponse) {}
+}
+
+enum Status {
+    OK = 0;
+    ERROR = 1;
+}
+
+message JoinRequest {
+    string addr = 1;
+    int32 weight = 2;
+}
+
+message JoinResponse {
+    Status code = 1;
+    string desc = 2;
+}
+
+service Test {
+    rpc Say(SayRequest) returns (SayResponse) {}
+}
+
+
+message SayRequest {
+    string sth = 1;
+}
+
+message SayResponse {
+    string yes = 1;
+}
